@@ -1,0 +1,48 @@
+[package]
+name = "onehux-sso"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90"
+authors = ["OneHux"]
+description = "Rust SDK for OneHux Accounts SSO — resource-server verification of OneHux-issued access tokens (RS256/JWKS) for a Rust API sitting behind a separate frontend BFF (SvelteKit via @onehux/sso, a mobile app, another service). No OAuth client/BFF role — see README for why."
+license = "Apache-2.0"
+repository = "https://github.com/Onehux/onehux-sso-rust"
+readme = "README.md"
+keywords = ["oauth", "oidc", "jwt", "jwks", "authentication"]
+categories = ["authentication", "web-programming"]
+
+[dependencies]
+jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs"] }
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", default-features = false, features = ["sync", "time"] }
+
+# Optional: the axum FromRequestParts extractor (OneHuxClaims) — on by default since every
+# known consumer of this crate (onehux-pos-backend, onehux-forge-backend-axum) is an axum API.
+# Disable with default-features = false if a future consumer uses a different framework.
+axum = { version = "0.8", optional = true }
+
+[dev-dependencies]
+base64 = "0.23.1"
+jsonwebtoken = { version = "11", features = ["use_pem"] }
+rand = "0.8"
+rsa = "0.9.10"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time"] }
+
+[features]
+default = ["axum"]
+axum = ["dep:axum"]
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
