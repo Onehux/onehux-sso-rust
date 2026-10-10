@@ -1,6 +1,6 @@
 //! Resource-server verification of OneHux-issued access tokens.
 //!
-//! For a Rust API sitting behind a *separate* frontend BFF (a SvelteKit app using
+//! For a Rust API sitting behind a *separate* frontend BFF (a `SvelteKit` app using
 //! `@onehux/sso`, a mobile app holding its own tokens, another service) rather than this app
 //! itself being the OAuth client. No session, no redirect, no client secret involved — mirrors
 //! `@onehux/sso/resource-server` (Node), `onehux_sso.resource_server` (Django), the Go
@@ -36,13 +36,13 @@ pub enum VerifyError {
     #[error("{0}")]
     Token(String),
     /// The JWKS endpoint could not be reached or returned something unparseable — distinct
-    /// from a rejected token, since this means "OneHux Accounts was unreachable," not "this
+    /// from a rejected token, since this means "`OneHux` Accounts was unreachable," not "this
     /// credential is dead."
     #[error("failed to fetch or parse OneHux Accounts' JWKS: {0}")]
     Jwks(String),
 }
 
-/// The real, verified claims from a OneHux access token. `raw` carries every claim, including
+/// The real, verified claims from a `OneHux` access token. `raw` carries every claim, including
 /// any not promoted to a named field, so a caller reading a claim this struct doesn't expose
 /// isn't blocked.
 #[derive(Debug, Clone, Deserialize)]
@@ -94,7 +94,7 @@ struct JwksCache {
 /// production values when left `None`.
 #[derive(Default)]
 pub struct ResourceServerOptions {
-    /// The OneHux Accounts issuer this API trusts. Default: `https://api-accounts.onehux.com`.
+    /// The `OneHux` Accounts issuer this API trusts. Default: `https://api-accounts.onehux.com`.
     /// Never point this at a custom domain — JWKS has no per-Organization customization.
     pub issuer: Option<String>,
     /// Restricts acceptance to tokens issued to specific Application(s) — the token's `aud`
@@ -161,7 +161,7 @@ impl ResourceServerVerifier {
     ///
     /// # Errors
     /// [`VerifyError::Token`] for a real rejection (expired, bad signature, unrecognized `kid`,
-    /// untrusted issuer/client_id, not an access token). [`VerifyError::Jwks`] if the JWKS
+    /// untrusted `issuer/client_id`, not an access token). [`VerifyError::Jwks`] if the JWKS
     /// endpoint itself could not be reached or parsed.
     pub async fn verify_access_token(&self, token: &str) -> Result<TokenClaims, VerifyError> {
         let header = decode_header(token)
