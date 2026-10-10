@@ -24,7 +24,7 @@ Not on crates.io — add as a git dependency:
 
 ```toml
 [dependencies]
-onehux-sso = { git = "https://github.com/Onehux/onehux-sso-rust", tag = "v0.1.0" }
+onehux-sso = { git = "https://github.com/Onehux/onehux-sso-rust", tag = "v0.1.1" }
 ```
 
 ## Two hosts — don't mix them up
@@ -97,7 +97,7 @@ that convention.
 Disable the extractor (and the `axum` dependency entirely) for a non-axum consumer:
 
 ```toml
-onehux-sso = { git = "...", tag = "v0.1.0", default-features = false }
+onehux-sso = { git = "...", tag = "v0.1.1", default-features = false }
 ```
 
 ## What's been verified
